@@ -6,6 +6,16 @@ const lottery = require('./data/lottery.json');
 const express = require('express');
 const logger = require('morgan');
 
+function intersectArrays(arr1, arr2) {
+    // implementar la función
+
+    // Debemos comprobar si cada número del array arr1 existe dentro del arr2
+    // Podemos filtrar este array mirando si cada uno de los elementos del arr1 esta incluido en el arr2
+    return arr1.filter(v => arr2.includes(v));
+
+    // return 
+}
+
 // Es generarme un objeto para gestionar el enrutamiento y otros aspectos de la aplicación
 const app = express();
 
@@ -42,9 +52,6 @@ app.get('/api/check-date', (req, res) => {
     if (item) {
 
 
-    //5. Suponemos de momento que siempre nos pasan una fecha que existe.
-    //2020-09-25 . Tenemos que devolver un JSON con este formato
-
     /**
      * {
      * "message" : "Draw found",
@@ -53,14 +60,26 @@ app.get('/api/check-date', (req, res) => {
      */
     res.send({
         message: "Draw found",
-        winningNumbers: item.winning_numbers
+        inningNumbers: `${item.winning_numbers} ${item.supplemental_numbers} ${item.super_ball}`
     });
 } else {
     res.status(404).send({
         message: "Draw not found for the given date"
     });
 };
+
+    //5. Suponemos de momento que siempre nos pasan una fecha que existe.
+    //2020-09-25 . Tenemos que devolver un JSON con este formato
 });
+
+// /api/get-computed-results?date=2024-06-18&playedNumbers=2 3 20 33 44 50 02
+app.get('/api/get-computed-results', (req, res) => {
+    // 10 minutos, penseis los pasos (steps) que hay seguir, similar al endpoint anterior, para conseguir la funcionalidad deseada (solo texto, no codigo)
+});
+
+    const { date, playedNumbers } = req.query;
+    console.log(playedNumbers);
+    
 
 // Levantar el servidor
 app.listen(3000, () => {

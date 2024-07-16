@@ -45,7 +45,33 @@
             e.preventDefault();
             const date = document.getElementById('date').value;
             // TODO: Realizar llamada al servidor. Procesar los datos y rellenar adecuadamente el DIV
+
+            //1. Usar el método fetch para hacer una petición de tipo GET a /api/check-date
+                const response = await fetch(`/api/check-date?date=${date}`)
+
+                console.log(response);
+
+            //2. Tenemos que pasarle una query string a la URL que vamos a consumir: /api/check-date?date=2020-09-25
+
+            //3. Tenemos que procesar la respuesta de la API. La estructura es: 
+            /**{
+             * "message": "Draw found"
+             * "winningNumbers": "21 22 50 55 67 20 02"
+             * }
+             * 
+             **/
+
+            const data = await response.json();
+
+            if(response.ok){
+
+            //4. Tenemos que coger la propiedad winninNumbers de esta respuesta y meterla en el #numberResult
+            document.querySelector('#numbersResult').value = data.winningNumbers;
+        } else {
+            document.querySelector('#numbersResult').value = data.message;
+        }
         });
+
 
         document.querySelector('#checkYourNumberForm').addEventListener('submit', (e) => {
             e.preventDefault();
